@@ -1,22 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Box, NumberInput, NumberDecrementStepper, Button, Heading, Stack, Text,
     NumberIncrementStepper, NumberInputStepper, NumberInputField, Select
 } from '@chakra-ui/react';
-import { Chart } from 'chart.js';
+import { useCookies } from 'react-cookie'
 
 function GoalChart(props: any) {
-    const [goal, setGoal] = useState('Currently undecided.')
+    const [cookies, setCookie] = useCookies(['goal'])
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
-        const [num, metric, time] = [
-            e.target.num.value,
-            e.target.metric.value,
-            e.target.time.value
-        ]
 
-        setGoal(`${num} ${metric} per ${time}`)
+        const goal = {
+            total: e.target.num.value,
+            metric: e.target.metric.value,
+            time: e.target.time.value
+        }
+
+        setCookie('goal', goal, { path: '/' })
     }
 
     return (
@@ -60,7 +61,11 @@ function GoalChart(props: any) {
 
         <Box {...styles.main}>
            <Heading>Your Goal Is:</Heading>
-           <Text>{goal}</Text>
+           <Text>
+            { cookies.goal ?
+            `${cookies.goal.total} ${cookies.goal.metric} in ${cookies.goal.time}`
+            : "Currently undecided"}
+            </Text>
         </Box>
     </Box>
     )
