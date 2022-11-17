@@ -1,7 +1,4 @@
-// import Head from 'next/head'
-// import Image from 'next/image'
-// import styles from '../styles/Home.module.css'
-// import { Heading } from '@chakra-ui/react'
+import Head from 'next/head'
 
 import GoalChart from '../components/goal'
 import Sidebar from '../components/navigation/Sidebar'
@@ -9,6 +6,9 @@ import Sidebar from '../components/navigation/Sidebar'
 export default function Home() {
   return (
     <>
+    <Head>
+      <title>The Writer's Hub</title>
+    </Head>
       <Sidebar />
       <GoalChart />
     </>
