@@ -1,4 +1,4 @@
-# Writer's Hub
+# Stepi
 
 Built on Next.js
 
