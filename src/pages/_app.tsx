@@ -1,15 +1,27 @@
-import '../styles/globals.css'
-import { ChakraProvider } from '@chakra-ui/react'
-import type { AppProps } from 'next/app'
-import { CookiesProvider } from 'react-cookie'
-// import theme from '../styles/theme'
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import { MantineProvider } from '@mantine/core';
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App(props: AppProps) {
+  const { Component, pageProps } = props;
+
   return (
-    <ChakraProvider>
-      <CookiesProvider>
+    <>
+      <Head>
+        <title>Page title</title>
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+      </Head>
+
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{
+          /** Put your mantine theme override here */
+          colorScheme: 'light',
+        }}
+      >
         <Component {...pageProps} />
-      </CookiesProvider>
-    </ChakraProvider>
-  )
+      </MantineProvider>
+    </>
+  );
 }

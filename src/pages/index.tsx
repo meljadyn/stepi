@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Sidebar from '../components/navigation/Sidebar'
+import { Title } from '@mantine/core';
 
 export default function Home() {
   return (
@@ -7,7 +7,7 @@ export default function Home() {
     <Head>
       <title>Stepi</title>
     </Head>
-    <Sidebar />
+    <Title>Stepi</Title>
     </>
   )
 }
