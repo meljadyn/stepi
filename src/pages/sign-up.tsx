@@ -7,6 +7,12 @@ import { showNotification } from '@mantine/notifications';
 import Head from "next/head";
 import React from 'react';
 
+// todo: add a user cookie when account creation is successful
+// todo: redirect user to the homepage
+
+// todo: add additional validation for "email is already in use"
+// todo: use a "something went wrong" error for other situations
+
 function SignUp() {
   const form = useForm({
     initialValues: {
@@ -33,13 +39,20 @@ function SignUp() {
     })
   }
 
-  const handleSubmit = (values: typeof form.values) => {
-    fetch('/api/sign-up', {
+  const handleSubmit = async (values: typeof form.values) => {
+    const res = await fetch('/api/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values)
     })
-      .then((res) => console.log(res))
+
+    if (!res.ok) {
+      form.setErrors({ email: "Email is already in use" })
+      return
+    }
+
+    const data = await res.json()
+    showNotification({ message: `User ${data.id} successfully created`, color: "green"})
   }
 
   return (
