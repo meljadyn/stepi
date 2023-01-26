@@ -1,11 +1,13 @@
 import {
     TextInput, PasswordInput, Anchor, Paper, Title, Text, Container, Button,
 } from '@mantine/core';
-import { useForm, hasLength, isEmail } from '@mantine/form';
+import { useForm, zodResolver } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
+import { z } from "zod";
 
 import Head from "next/head";
 import React from 'react';
+import { useState } from "react"
 
 // todo: add a user cookie when account creation is successful
 // todo: redirect user to the homepage
@@ -13,7 +15,26 @@ import React from 'react';
 // todo: add additional validation for "email is already in use"
 // todo: use a "something went wrong" error for other situations
 
+const schema = z
+  .object({
+    email:        z.string()
+                   .email({ message: "Invalid email" })
+                   .max(254),
+    password:     z.string()
+                   .min(6, { message: "Must be at least 6 characters long" })
+                   .max(50, { message: "Must be less than 50 characters long" }),
+    confirmation: z.string()
+  })
+  .required()
+  .refine((data) => data.password === data.confirmation, {
+    message: "Passwords must match",
+    path: ["confirmation"]
+  });
+
+
 function SignUp() {
+  const [loading, setLoading] = useState(false);
+
   const form = useForm({
     initialValues: {
       email: '',
@@ -21,15 +42,8 @@ function SignUp() {
       confirmation: ''
     },
 
-    validate: {
-      email: isEmail('Invalid email'),
-      password: hasLength({ min: 6, max: 50 }, 'Password must 6-50 characters long'),
-      confirmation: (confirm, values) =>
-        confirm !== values.password ? 'Passwords must match' : null
-
-    },
-
-    validateInputOnChange: true
+    validate: zodResolver(schema),
+    validateInputOnBlur: true
   })
 
   const handleError = () => {
@@ -40,6 +54,9 @@ function SignUp() {
   }
 
   const handleSubmit = async (values: typeof form.values) => {
+    if (loading) return;
+
+    setLoading(true)
     const res = await fetch('/api/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -48,11 +65,13 @@ function SignUp() {
 
     if (!res.ok) {
       form.setErrors({ email: "Email is already in use" })
+      setLoading(false)
       return
     }
 
     const data = await res.json()
     showNotification({ message: `User ${data.id} successfully created`, color: "green"})
+    setLoading(false)
   }
 
   return (
@@ -99,7 +118,7 @@ function SignUp() {
             mt="md"
           />
 
-          <Button color="indigo" fullWidth mt="xl" type="submit">
+          <Button color="indigo" fullWidth mt="xl" type="submit" loading={loading}>
             Sign Up
           </Button>
           </form>
