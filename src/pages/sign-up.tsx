@@ -3,7 +3,7 @@ import {
 } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
-import { z } from "zod";
+import { userCreateSchema } from '../lib/schema/user.schema';
 
 import Head from "next/head";
 import React from 'react';
@@ -11,26 +11,6 @@ import { useState } from "react"
 
 // todo: add a user cookie when account creation is successful
 // todo: redirect user to the homepage
-
-// todo: add additional validation for "email is already in use"
-// todo: use a "something went wrong" error for other situations
-
-const schema = z
-  .object({
-    email:        z.string()
-                   .email({ message: "Invalid email" })
-                   .max(254),
-    password:     z.string()
-                   .min(6, { message: "Must be at least 6 characters long" })
-                   .max(50, { message: "Must be less than 50 characters long" }),
-    confirmation: z.string()
-  })
-  .required()
-  .refine((data) => data.password === data.confirmation, {
-    message: "Passwords must match",
-    path: ["confirmation"]
-  });
-
 
 function SignUp() {
   const [loading, setLoading] = useState(false);
@@ -42,7 +22,7 @@ function SignUp() {
       confirmation: ''
     },
 
-    validate: zodResolver(schema),
+    validate: zodResolver(userCreateSchema),
     validateInputOnBlur: true
   })
 
@@ -55,21 +35,22 @@ function SignUp() {
 
   const handleSubmit = async (values: typeof form.values) => {
     if (loading) return;
-
     setLoading(true)
+
     const res = await fetch('/api/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values)
-    })
+    });
+
 
     if (!res.ok) {
-      form.setErrors({ email: "Email is already in use" })
+      form.setErrors({ email: "Email is already in use" });
       setLoading(false)
       return
     }
+    const data = await res.json();
 
-    const data = await res.json()
     showNotification({ message: `User ${data.id} successfully created`, color: "green"})
     setLoading(false)
   }
