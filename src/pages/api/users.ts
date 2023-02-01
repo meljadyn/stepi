@@ -7,8 +7,6 @@ import withValidation from '../../middleware/withValidation';
 import { userCreateSchema } from '../../lib/schema/user.schema';
 
 
-const saltRounds = 10;
-
 type Data = {
   status: number
   message: string
@@ -22,7 +20,7 @@ type Data = {
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
-) {
+  ) {
   if (req.method !== "POST") {
     res.status(405).json({ status: 405, message: "Invalid access method used"})
   }
@@ -31,15 +29,24 @@ async function handler(
     let newUser = await prisma.user.create({
       data: {
         email: req.body.email.toLowerCase(),
-        passhash: await bcrypt.hash(req.body.password, saltRounds)
+        passhash: await bcrypt.hash(req.body.password, 10)
       }
     })
 
-    return res.status(200).json({ status: 200, message: "User creation successful", data: { id: newUser.id, email: newUser.email } })
+    return res.status(200).json({
+      status: 200,
+      message: "User creation successful",
+      data: {
+        id: newUser.id,
+        email: newUser.email
+    }});
 
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
-      return res.status(400).json({ status: 400, message: "Email is already in use"})
+      return res.status(400).json({
+        status: 400,
+        message: "Email is already in use"
+      })
     }
   }
 
