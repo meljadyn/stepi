@@ -8,12 +8,8 @@ import { userCreateSchema } from '../../lib/schema/user.schema';
 
 
 type Data = {
-  status: number
   message: string
-  data?: {
-    id: number,
-    email: string
-  }
+  id?: number,
 }
 
 
@@ -22,7 +18,7 @@ async function handler(
   res: NextApiResponse<Data>
   ) {
   if (req.method !== "POST") {
-    res.status(405).json({ status: 405, message: "Invalid access method used"})
+    res.status(405).json({ message: "Invalid access method used"})
   }
 
   try {
@@ -34,23 +30,19 @@ async function handler(
     })
 
     return res.status(200).json({
-      status: 200,
       message: "User creation successful",
-      data: {
-        id: newUser.id,
-        email: newUser.email
-    }});
+      id: newUser.id,
+    });
 
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
       return res.status(400).json({
-        status: 400,
         message: "Email is already in use"
       })
     }
   }
 
-  return res.status(500).json({ status: 500, message: "Internal error" })
+  return res.status(500).json({ message: "Internal error" })
 }
 
 export default withValidation(handler, userCreateSchema);
