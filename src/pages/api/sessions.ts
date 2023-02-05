@@ -4,7 +4,7 @@ import prisma from "../../lib/prisma";
 import bcrypt from "bcryptjs";
 
 import withValidation from '../../middleware/withValidation';
-import { sessionCreateSchema } from '../../lib/schema/session.schema';
+import { sessionCreateSchema } from '../../constants/schema/session.schema';
 
 
 

@@ -17,7 +17,7 @@ import { showNotification } from "@mantine/notifications";
 import Head from "next/head";
 import { useState } from "react";
 
-import { sessionCreateSchema } from '../lib/schema/session.schema';
+import { sessionCreateSchema } from '../constants/schema/session.schema';
 
 function LogIn() {
   const [loading, setLoading] = useState(false);

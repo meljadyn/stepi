@@ -3,7 +3,7 @@ import {
 } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
-import { userCreateSchema } from '../lib/schema/user.schema';
+import { userCreateSchema } from '../constants/schema/user.schema';
 
 import Head from "next/head";
 import React from 'react';

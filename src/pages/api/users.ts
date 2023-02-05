@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { Prisma } from '@prisma/client';
 
 import withValidation from '../../middleware/withValidation';
-import { userCreateSchema } from '../../lib/schema/user.schema';
+import { userCreateSchema } from '../../constants/schema/user.schema';
 
 
 type Data = {
