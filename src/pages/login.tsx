@@ -50,9 +50,9 @@ function LogIn() {
     const data = await res.json();
 
     showNotification({
-      message: `User ${data.id} has started a new session`,
-      color: "green"
-    })
+      message: JSON.stringify(data),
+      color: "green",
+    });
 
     setLoading(false)
   }

@@ -11,7 +11,7 @@ const withValidation = (handler: NextApiHandler, schema: z.ZodType) => {
       }
     }
 
-    handler(req, res);
+    await handler(req, res);
   }
 }
 export default withValidation;
