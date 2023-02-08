@@ -42,11 +42,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
     );
 
     if (passwordIsCorrect) {
-      const token = jwt.sign(
-        { user: user.id, email: user.email },
-        process.env.JWT_SECRET as string,
-        { expiresIn: "30d" }
-      );
+      const token = createAuthToken({ id: user.id });
 
       setCookie("auth", token, {
         req,
@@ -70,6 +66,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 
   return res.status(400).json({
     message: "Email and password combination not found",
+  });
+}
+
+type User = {
+  id: number;
+};
+
+function createAuthToken(user: User) {
+  return jwt.sign({ user: user.id }, process.env.JWT_SECRET as string, {
+    expiresIn: "2hr",
   });
 }
 
