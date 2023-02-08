@@ -5,11 +5,6 @@ import bcrypt from "bcryptjs";
 
 import { sessionCreateSchema } from "../../constants/schema/session.schema";
 import withValidation from "../../middleware/withValidation";
-import jwt from "jsonwebtoken";
-import { setCookie } from "cookies-next";
-
-import dotenv from "dotenv";
-dotenv.config();
 
 type Data = {
   message: string;
@@ -42,20 +37,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
     );
 
     if (passwordIsCorrect) {
-      const token = createAuthToken({ id: user.id });
-
-      setCookie("auth", token, {
-        req,
-        res,
-        maxAge: 3200,
-        httpOnly: true,
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-      });
-
       return res.status(200).json({
-        message: "User validated",
+        message: "User authenticated",
         user: {
           id: user.id,
           email: user.email,
@@ -72,11 +55,5 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 type User = {
   id: number;
 };
-
-function createAuthToken(user: User) {
-  return jwt.sign({ user: user.id }, process.env.JWT_SECRET as string, {
-    expiresIn: "2hr",
-  });
-}
 
 export default withValidation(handler, sessionCreateSchema);
