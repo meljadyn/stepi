@@ -3,7 +3,7 @@ import prisma from "../../lib/prisma";
 import bcrypt from "bcryptjs";
 import { Prisma } from '@prisma/client';
 
-import withValidation from '../../middleware/withValidation';
+import withValidation from "../../utils/middleware/withValidation";
 import { userCreateSchema } from '../../constants/schema/user.schema';
 
 

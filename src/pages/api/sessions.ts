@@ -4,7 +4,7 @@ import prisma from "../../lib/prisma";
 import bcrypt from "bcryptjs";
 
 import { sessionCreateSchema } from "../../constants/schema/session.schema";
-import withValidation from "../../middleware/withValidation";
+import withValidation from "../../utils/middleware/withValidation";
 
 type Data = {
   message: string;
