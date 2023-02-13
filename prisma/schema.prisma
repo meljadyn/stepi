@@ -12,8 +12,32 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique @db.VarChar(254)
-  passhash String
-  name     String?
+  id        String    @id @default(cuid())
+  email     String    @unique @db.VarChar(254)
+  passhash  String
+  name      String?
+  projects  Project[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Project {
+  id     Int    @id @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  tasks  Task[]
+  name   String @db.VarChar(100)
+}
+
+model Task {
+  id           Int      @id @default(autoincrement())
+  project      Project  @relation(fields: [projectId], references: [id])
+  projectId    Int
+  title        String
+  parent       Task?    @relation("TaskRelationship", fields: [parentId], references: [id])
+  parentId     Int?
+  children     Task[]   @relation("TaskRelationship")
+  updatedAt    DateTime @updatedAt
+  stage        Int      @default(-1)
+  timeEstimate DateTime @db.Timestamp()
 }
