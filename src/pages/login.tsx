@@ -18,6 +18,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 
 import { sessionCreateSchema } from "../constants/schema/session.schema";
+import LandingNavbar from "../components/navigation/LandingNavbar";
 
 function LogIn() {
   const [loading, setLoading] = useState(false);
@@ -49,6 +50,7 @@ function LogIn() {
 
   return (
     <>
+      <LandingNavbar />
       <Head>
         <title>Login | Stepi</title>
       </Head>
