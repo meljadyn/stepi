@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createStyles, Navbar, Group, Code } from "@mantine/core";
+import { createStyles, Navbar, Group, Code, Button } from "@mantine/core";
 import {
   IconBellRinging,
   IconFingerprint,
@@ -96,7 +96,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 });
 
 const data = [
-  { link: "", label: "Notifications", icon: IconBellRinging },
+  { link: "/projects/new", label: "New Project", icon: IconBellRinging },
   { link: "", label: "Billing", icon: IconReceipt2 },
   { link: "", label: "Security", icon: IconFingerprint },
   { link: "", label: "SSH Keys", icon: IconKey },
@@ -105,9 +105,13 @@ const data = [
   { link: "", label: "Other Settings", icon: IconSettings },
 ];
 
-export function Sidebar() {
+type Props = {
+  active: string;
+};
+
+export function Sidebar(props: Props) {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("Billing");
+  const [active, setActive] = useState(props.active || "Billing");
 
   const links = data.map((item) => (
     <a
@@ -117,7 +121,6 @@ export function Sidebar() {
       href={item.link}
       key={item.label}
       onClick={(event) => {
-        event.preventDefault();
         setActive(item.label);
       }}
     >
