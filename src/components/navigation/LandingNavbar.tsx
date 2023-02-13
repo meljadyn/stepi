@@ -1,33 +1,17 @@
 import {
   createStyles,
   Header,
-  HoverCard,
   Group,
   Button,
-  UnstyledButton,
-  Text,
-  SimpleGrid,
-  ThemeIcon,
-  Anchor,
   Divider,
-  Center,
   Box,
   Burger,
   Drawer,
-  Collapse,
   ScrollArea,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconNotification,
-  IconCode,
-  IconBook,
-  IconChartPie3,
-  IconFingerprint,
-  IconCoin,
-  IconChevronDown,
-} from "@tabler/icons";
 import Link from "next/link";
+import StepiLogo from "../identity/StepiLogo";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -104,15 +88,10 @@ export default function LandingNavbar() {
   const { classes, theme } = useStyles();
 
   return (
-    <Box pb={120}>
+    <Box pb={10}>
       <Header height={60} px="md">
         <Group position="apart" sx={{ height: "100%" }}>
-          <Group>
-            <img height={25} src="/stepi.png" />
-            <Text size={22} color="indigo">
-              Stepi
-            </Text>
-          </Group>
+          <StepiLogo size={25} />
           <Group
             sx={{ height: "100%" }}
             spacing={0}
