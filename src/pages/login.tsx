@@ -35,7 +35,11 @@ function LogIn() {
     if (loading) return;
     setLoading(true);
 
-    const res = await signIn("credentials", { ...values, redirect: false });
+    const res = await signIn("credentials", {
+      ...values,
+      callbackUrl: "/dashboard",
+    });
+
     if (res && !res.ok) {
       form.setErrors({ email: "Invalid password and email combination" });
     }

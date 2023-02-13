@@ -1,11 +1,11 @@
-import NextAuth from "next-auth";
+import NextAuth, { SessionStrategy } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import dotenv from "dotenv";
 dotenv.config();
 
-export default NextAuth({
+export const authOptions = {
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as SessionStrategy,
   },
   providers: [
     CredentialsProvider({
@@ -33,4 +33,6 @@ export default NextAuth({
     signIn: "/login",
     newUser: "/sign-up",
   },
-});
+};
+
+export default NextAuth(authOptions);
