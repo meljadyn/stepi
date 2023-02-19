@@ -8,9 +8,9 @@ import { userCreateSchema } from '../../constants/schema/user.schema';
 
 
 type Data = {
-  message: string
-  id?: number,
-}
+  message: string;
+  id?: string;
+};
 
 
 async function handler(

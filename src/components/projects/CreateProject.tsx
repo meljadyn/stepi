@@ -13,7 +13,22 @@ function CreateProject() {
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log(values);
+    if (loading) return;
+    setLoading(true);
+
+    const res = await fetch("/api/projects", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+
+    if (!res.ok) {
+      form.setErrors({ name: "Project creation failed" });
+      setLoading(false);
+      return;
+    }
+
+    setLoading(false);
   };
 
   return (

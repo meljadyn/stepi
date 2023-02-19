@@ -12,6 +12,7 @@ import {
   IconLogout,
 } from "@tabler/icons";
 import StepiLogo from "../identity/StepiLogo";
+import { signOut } from "next-auth/react";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -149,11 +150,7 @@ export function Sidebar(props: Props) {
           <span>Change account</span>
         </a>
 
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
+        <a href="#" className={classes.link} onClick={() => signOut()}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Logout</span>
         </a>

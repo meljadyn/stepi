@@ -9,7 +9,7 @@ import withValidation from "../../utils/middleware/withValidation";
 type Data = {
   message: string;
   user?: {
-    id: number;
+    id: string;
     email: string;
   };
 };

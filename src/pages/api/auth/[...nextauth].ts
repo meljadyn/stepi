@@ -33,6 +33,22 @@ export const authOptions = {
     signIn: "/login",
     newUser: "/sign-up",
   },
+
+  // Ensure user id is included in next-auth response
+  callbacks: {
+    session: async ({ session, token }: any) => {
+      if (session?.user) {
+        session.user.id = token.uid;
+      }
+      return session;
+    },
+    jwt: async ({ user, token }: any) => {
+      if (user) {
+        token.uid = user.id;
+      }
+      return token;
+    },
+  },
 };
 
 export default NextAuth(authOptions);
