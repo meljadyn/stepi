@@ -35,6 +35,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
       id: newProject.id,
     });
   } catch (e) {
+    console.error(e);
     return res.status(500).json({
       message: "Internal server error",
     });

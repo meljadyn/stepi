@@ -98,7 +98,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 
 const data = [
   { link: "/projects/new", label: "New Project", icon: IconBellRinging },
-  { link: "", label: "Billing", icon: IconReceipt2 },
+  { link: "/projects", label: "Projects", icon: IconReceipt2 },
   { link: "", label: "Security", icon: IconFingerprint },
   { link: "", label: "SSH Keys", icon: IconKey },
   { link: "", label: "Databases", icon: IconDatabaseImport },

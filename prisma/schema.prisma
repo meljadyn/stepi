@@ -27,6 +27,7 @@ model Project {
   userId String
   tasks  Task[]
   name   String @db.VarChar(100)
+  @@unique([userId, name])
 }
 
 model Task {
