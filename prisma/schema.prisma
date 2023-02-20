@@ -35,10 +35,11 @@ model Task {
   project      Project  @relation(fields: [projectId], references: [id])
   projectId    Int
   title        String
+  description  String?
   parent       Task?    @relation("TaskRelationship", fields: [parentId], references: [id])
   parentId     Int?
   children     Task[]   @relation("TaskRelationship")
   updatedAt    DateTime @updatedAt
   stage        Int      @default(-1)
-  timeEstimate DateTime @db.Timestamp()
+  duration     DateTime @db.Timestamp()
 }
