@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 import { getServerSession } from "next-auth";
-import set from "date-fns/set";
 
 import { authOptions } from "./auth/[...nextauth]";
 import { taskCreateSchema } from "./../../constants/schema/task.schema";
