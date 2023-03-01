@@ -9,7 +9,7 @@ function Dashboard() {
         <title>Dashboard | Stepi</title>
       </Head>
       <Group>
-        <Sidebar />
+        <Sidebar active="Home" />
         <Title>Dashboard</Title>
       </Group>
     </>

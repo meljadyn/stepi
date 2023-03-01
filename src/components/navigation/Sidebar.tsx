@@ -2,14 +2,12 @@ import { useState } from "react";
 import { createStyles, Navbar, Group, Code, Button } from "@mantine/core";
 import {
   IconBellRinging,
-  IconFingerprint,
-  IconKey,
   IconSettings,
-  Icon2fa,
-  IconDatabaseImport,
-  IconReceipt2,
+  IconHome,
+  IconCategory,
   IconSwitchHorizontal,
   IconLogout,
+  IconCirclePlus,
 } from "@tabler/icons";
 import StepiLogo from "../identity/StepiLogo";
 import { signOut } from "next-auth/react";
@@ -97,12 +95,9 @@ const useStyles = createStyles((theme, _params, getRef) => {
 });
 
 const data = [
-  { link: "/projects/new", label: "New Project", icon: IconBellRinging },
-  { link: "/projects", label: "Projects", icon: IconReceipt2 },
-  { link: "", label: "Security", icon: IconFingerprint },
-  { link: "", label: "SSH Keys", icon: IconKey },
-  { link: "", label: "Databases", icon: IconDatabaseImport },
-  { link: "", label: "Authentication", icon: Icon2fa },
+  { link: "/dashboard", label: "Home", icon: IconHome },
+  { link: "/projects/new", label: "New Project", icon: IconCirclePlus },
+  { link: "/projects", label: "Projects", icon: IconCategory },
   { link: "", label: "Other Settings", icon: IconSettings },
 ];
 
@@ -112,7 +107,7 @@ type Props = {
 
 export function Sidebar(props: Props) {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState(props.active || "Billing");
+  const [active, setActive] = useState(props.active || "Home");
 
   const links = data.map((item) => (
     <a
