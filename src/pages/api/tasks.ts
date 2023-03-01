@@ -23,13 +23,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
     return res.status(400).json({ message: "Invalid access" });
   }
 
-  const [hours, minutes] = req.body.duration.split(":");
   try {
     let newTask = await prisma.task.create({
       data: {
         title: req.body.title,
-        duration: set(new Date(), { hours: hours, minutes: minutes }),
-        projectId: 1, // TODO: Send projectId with the request, as well as parent
+        duration: req.body.duration,
+        unit: req.body.unit,
+        projectId: req.body.projectId,
       },
     });
 

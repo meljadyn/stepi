@@ -1,4 +1,13 @@
-import { Paper, TextInput, Button, Container, Title } from "@mantine/core";
+import {
+  Paper,
+  TextInput,
+  Button,
+  Container,
+  Title,
+  NativeSelect,
+  NumberInput,
+  Group,
+} from "@mantine/core";
 import { TimeInput } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
@@ -6,13 +15,18 @@ import Head from "next/head";
 import { useState } from "react";
 import { taskCreateSchema } from "../../constants/schema/task.schema";
 
-function CreateTask() {
+type Props = {
+  projectId: number;
+};
+
+function CreateTask({ projectId }: Props) {
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
       title: "",
-      duration: "00:00",
+      duration: 0,
+      unit: "h",
     },
 
     validate: zodResolver(taskCreateSchema),
@@ -27,15 +41,13 @@ function CreateTask() {
   };
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log(form.values);
-
     if (loading) return;
     setLoading(true);
 
     const res = await fetch("/api/tasks", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
+      body: JSON.stringify({ ...values, projectId }),
     });
 
     if (!res.ok) {
@@ -63,12 +75,22 @@ function CreateTask() {
             required
             {...form.getInputProps("title")}
           />
+          <Group>
+            <NumberInput
+              label="Duration"
+              min={0}
+              precision={form.values.unit === "h" ? 2 : 0}
+              step={form.values.unit === "h" ? 0.25 : 5}
+              {...form.getInputProps("duration")}
+            />
 
-          <TextInput
-            label="Pick time"
-            description="Estimated length of time this project will take (hh:mm)"
-            {...form.getInputProps("duration")}
-          />
+            <NativeSelect
+              data={["h", "min"]}
+              description="hours / minutes"
+              withAsterisk
+              {...form.getInputProps("unit")}
+            />
+          </Group>
 
           <Button
             color="indigo"

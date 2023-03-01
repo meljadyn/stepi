@@ -41,5 +41,6 @@ model Task {
   children     Task[]   @relation("TaskRelationship")
   updatedAt    DateTime @updatedAt
   stage        Int      @default(-1)
-  duration     DateTime @db.Timestamp()
+  duration     Float?
+  unit         String?
 }

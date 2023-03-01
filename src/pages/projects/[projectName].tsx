@@ -27,7 +27,7 @@ function Project({ project }: Props) {
       <Group>
         <Sidebar active="Project" />
         <Stack>
-          <CreateTask />
+          <CreateTask projectId={project.id} />
           <ShowTasks tasks={project.tasks} />
         </Stack>
       </Group>
