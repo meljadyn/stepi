@@ -1,4 +1,4 @@
-import { Group } from "@mantine/core";
+import { Group, Stack } from "@mantine/core";
 import { getToken } from "next-auth/jwt";
 import Head from "next/head";
 import { Sidebar } from "../../components/navigation/Sidebar";
@@ -26,10 +26,10 @@ function Project({ project }: Props) {
       </Head>
       <Group>
         <Sidebar active="Project" />
-        <Group>
+        <Stack>
           <CreateTask />
           <ShowTasks tasks={project.tasks} />
-        </Group>
+        </Stack>
       </Group>
     </>
   );
