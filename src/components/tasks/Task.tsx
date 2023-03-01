@@ -1,11 +1,17 @@
-import { Card, Title } from "@mantine/core";
+import { Group, Paper } from "@mantine/core";
 
-function Task() {
-  <Card shadow="lg">
-    <Card.Section>
-      <Title></Title>
-    </Card.Section>
-  </Card>;
+type Props = {
+  task: {
+    title: String;
+  };
+};
+
+function Task({ task }: Props) {
+  return (
+    <Paper shadow="lg" p="md">
+      <Group>{task.title}</Group>
+    </Paper>
+  );
 }
 
 export default Task;

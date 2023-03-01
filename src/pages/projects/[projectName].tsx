@@ -1,56 +1,80 @@
-import { Anchor, Group, Paper, List, filterProps } from "@mantine/core";
+import { Group } from "@mantine/core";
 import { getToken } from "next-auth/jwt";
 import Head from "next/head";
-import { Text } from "@mantine/core";
 import { Sidebar } from "../../components/navigation/Sidebar";
 import prisma from "../../lib/prisma";
 import { GetServerSidePropsContext } from "next/types";
-import { useRouter } from "next/router";
 import CreateTask from "../../components/tasks/CreateTask";
 import ShowTasks from "../../components/tasks/ShowTasks";
 
 type Props = {
-  tasks: {
-    title: string;
+  project: {
     id: number;
-  }[];
+    name: string;
+    tasks: {
+      id: number;
+      title: string;
+    }[];
+  };
 };
 
-function Project(props: Props) {
-  const router = useRouter();
-  const { projectName } = router.query;
-
+function Project({ project }: Props) {
   return (
     <>
       <Head>
-        <title>{`${projectName} | Stepi`}</title>
+        <title>{`${project.name} | Stepi`}</title>
       </Head>
       <Group>
-        <Sidebar active="Projects" />
+        <Sidebar active="Project" />
         <Group>
           <CreateTask />
-          <ShowTasks tasks={props.tasks} />
+          <ShowTasks tasks={project.tasks} />
         </Group>
       </Group>
     </>
   );
 }
 
-export async function getServerSideProps({ req }: GetServerSidePropsContext) {
-  const tasks = await prisma.task.findMany({
+export async function getServerSideProps({
+  req,
+  params,
+}: GetServerSidePropsContext) {
+  const session = await getToken({ req });
+  const toHomepage = { destination: "/dashboard", permanent: false };
+
+  if (!session || !params?.projectName) {
+    return {
+      redirect: toHomepage,
+    };
+  }
+
+  const project = await prisma.project.findUnique({
     where: {
-      projectId: {
-        equals: 1,
+      userId_name: {
+        userId: session.uid as string,
+        name: params.projectName as string,
       },
     },
     select: {
       id: true,
-      title: true,
+      name: true,
+      tasks: {
+        select: {
+          title: true,
+          id: true,
+        },
+      },
     },
   });
 
+  if (!project) {
+    return {
+      redirect: toHomepage,
+    };
+  }
+
   return {
-    props: { tasks },
+    props: { project },
   };
 }
 
