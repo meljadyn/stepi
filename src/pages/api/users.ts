@@ -17,32 +17,42 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
   ) {
-  if (req.method !== "POST") {
-    res.status(405).json({ message: "Invalid access method used"})
-  }
-
-  try {
-    let newUser = await prisma.user.create({
-      data: {
-        email: req.body.email.toLowerCase(),
-        passhash: await bcrypt.hash(req.body.password, 10)
+    switch (req.method) {
+      case "GET": {
+        return res.redirect("/404");
       }
-    })
 
-    return res.status(200).json({
-      message: "User creation successful",
-      id: newUser.id,
-    });
+      case "POST": {
+        try {
+          let newUser = await prisma.user.create({
+            data: {
+              email: req.body.email.toLowerCase(),
+              passhash: await bcrypt.hash(req.body.password, 10),
+            },
+          });
 
-  } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
-      return res.status(400).json({
-        message: "Email is already in use"
-      })
+          return res.status(200).json({
+            message: "User creation successful",
+            id: newUser.id,
+          });
+        } catch (e) {
+          if (
+            e instanceof Prisma.PrismaClientKnownRequestError &&
+            e.code === "P2002"
+          ) {
+            return res.status(400).json({
+              message: "Email is already in use",
+            });
+          }
+        }
+
+        return res.status(500).json({ message: "Internal error" });
+      }
+
+      default: {
+        return res.status(405).json({ message: "Invalid access method used" });
+      }
     }
-  }
-
-  return res.status(500).json({ message: "Internal error" })
 }
 
 export default withValidation(handler, userCreateSchema);

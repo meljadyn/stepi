@@ -12,33 +12,41 @@ type Data = {
 };
 
 async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-  if (req.method !== "POST") {
-    res.status(405).json({ message: "Invalid access method used" });
-  }
+  switch (req.method) {
+    case "GET": {
+      return res.redirect("/404");
+    }
 
-  const session = await getServerSession(req, res, authOptions);
+    case "POST": {
+      const session = await getServerSession(req, res, authOptions);
 
-  if (!session) {
-    return res.status(400).json({ message: "Invalid access" });
-  }
+      if (!session) {
+        return res.status(400).json({ message: "Invalid access" });
+      }
 
-  try {
-    let newProject = await prisma.project.create({
-      data: {
-        userId: session.user.id,
-        name: req.body.name,
-      },
-    });
+      try {
+        let newProject = await prisma.project.create({
+          data: {
+            userId: session.user.id,
+            name: req.body.name,
+          },
+        });
 
-    return res.status(200).json({
-      message: "Project creation successful",
-      id: newProject.id,
-    });
-  } catch (e) {
-    console.error(e);
-    return res.status(500).json({
-      message: "Internal server error",
-    });
+        return res.status(200).json({
+          message: "Project creation successful",
+          id: newProject.id,
+        });
+      } catch (e) {
+        console.error(e);
+        return res.status(500).json({
+          message: "Internal server error",
+        });
+      }
+    }
+
+    default: {
+      return res.status(405).json({ message: "Invalid access method used" });
+    }
   }
 }
 

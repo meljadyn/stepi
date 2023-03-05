@@ -15,45 +15,49 @@ type Data = {
 };
 
 async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Invalid access method used" });
-  }
+  switch (req.method) {
+    case "GET": {
+      return res.redirect("/404");
+    }
 
-  const user = await prisma.user.findUnique({
-    where: {
-      email: req.body.email.toLowerCase(),
-    },
-    select: {
-      id: true,
-      email: true,
-      passhash: true,
-    },
-  });
-
-  if (user) {
-    const passwordIsCorrect = await bcrypt.compare(
-      req.body.password,
-      user.passhash
-    );
-
-    if (passwordIsCorrect) {
-      return res.status(200).json({
-        message: "User authenticated",
-        user: {
-          id: user.id,
-          email: user.email,
+    case "POST": {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: req.body.email.toLowerCase(),
+        },
+        select: {
+          id: true,
+          email: true,
+          passhash: true,
         },
       });
+
+      if (user) {
+        const passwordIsCorrect = await bcrypt.compare(
+          req.body.password,
+          user.passhash
+        );
+
+        if (passwordIsCorrect) {
+          return res.status(200).json({
+            message: "User authenticated",
+            user: {
+              id: user.id,
+              email: user.email,
+            },
+          });
+        }
+      }
+
+      return res.status(400).json({
+        message: "Email and password combination not found",
+      });
+    }
+
+    default: {
+      return res.status(405).json({ message: "Invalid access method used" });
     }
   }
-
-  return res.status(400).json({
-    message: "Email and password combination not found",
-  });
 }
-
-type User = {
-  id: number;
-};
 
 export default withValidation(handler, sessionCreateSchema);
