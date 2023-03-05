@@ -3,15 +3,12 @@ import {
   TextInput,
   Button,
   Container,
-  Title,
   NativeSelect,
   NumberInput,
   Group,
 } from "@mantine/core";
-import { TimeInput } from "@mantine/dates";
 import { useForm, zodResolver } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import Head from "next/head";
 import { useState } from "react";
 import { taskCreateSchema } from "../../constants/schema/task.schema";
 
@@ -60,22 +57,17 @@ function CreateTask({ projectId }: Props) {
   };
 
   return (
-    <Container size={420} my={40}>
-      <Title
-        align="center"
-        sx={(theme) => ({ fontFamily: theme.fontFamily, fontWeight: 900 })}
-      >
-        Create Task
-      </Title>
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+    <Container>
+      <Paper shadow="lg" p="md">
         <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
-          <TextInput
-            label="Title"
-            placeholder="Your task info"
-            required
-            {...form.getInputProps("title")}
-          />
           <Group>
+            <TextInput
+              label="Title"
+              placeholder="+ Create new task"
+              required
+              {...form.getInputProps("title")}
+            />
+
             <NumberInput
               label="Duration"
               min={0}
@@ -90,17 +82,11 @@ function CreateTask({ projectId }: Props) {
               withAsterisk
               {...form.getInputProps("unit")}
             />
-          </Group>
 
-          <Button
-            color="indigo"
-            fullWidth
-            mt="xl"
-            type="submit"
-            loading={loading}
-          >
-            Sign Up
-          </Button>
+            <Button color="indigo" mt="xl" type="submit" loading={loading}>
+              +
+            </Button>
+          </Group>
         </form>
       </Paper>
     </Container>

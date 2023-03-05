@@ -1,4 +1,5 @@
 import { Group, Paper, Text } from "@mantine/core";
+import { useStyles } from "./styles";
 
 type Props = {
   task: {
@@ -10,8 +11,10 @@ type Props = {
 };
 
 function Task({ task }: Props) {
+  const { classes } = useStyles();
+
   return (
-    <Paper shadow="lg" p="md">
+    <Paper withBorder shadow="lg" p="md" className={classes.task}>
       <Group>
         <Text>{task.title}</Text>
         <Text>

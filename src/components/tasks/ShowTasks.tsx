@@ -1,4 +1,5 @@
 import { List, Container } from "@mantine/core";
+import CreateTask from "./CreateTask";
 import Task from "./Task";
 
 type Props = {
@@ -14,7 +15,7 @@ function ShowTasks(props: Props) {
   const { tasks } = props;
 
   return (
-    <Container>
+    <Container w="100%">
       {tasks && (
         <List sx={{ listStyleType: "none" }}>
           {tasks.map((task) => (
