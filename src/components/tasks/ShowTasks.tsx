@@ -4,6 +4,8 @@ import Task from "./Task";
 type Props = {
   tasks: {
     title: string;
+    duration: string;
+    unit: string;
     id: number;
   }[];
 };

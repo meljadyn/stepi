@@ -1,15 +1,24 @@
-import { Group, Paper } from "@mantine/core";
+import { Group, Paper, Text } from "@mantine/core";
 
 type Props = {
   task: {
-    title: String;
+    title: string;
+    duration: string;
+    unit: string;
+    id: number;
   };
 };
 
 function Task({ task }: Props) {
   return (
     <Paper shadow="lg" p="md">
-      <Group>{task.title}</Group>
+      <Group>
+        <Text>{task.title}</Text>
+        <Text>
+          {task.duration || "no duration"}
+          {task.unit}
+        </Text>
+      </Group>
     </Paper>
   );
 }

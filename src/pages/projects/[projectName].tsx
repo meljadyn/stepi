@@ -12,8 +12,10 @@ type Props = {
     id: number;
     name: string;
     tasks: {
-      id: number;
       title: string;
+      duration: string;
+      unit: string;
+      id: number;
     }[];
   };
 };
@@ -60,8 +62,10 @@ export async function getServerSideProps({
       name: true,
       tasks: {
         select: {
-          title: true,
           id: true,
+          title: true,
+          duration: true,
+          unit: true,
         },
       },
     },
