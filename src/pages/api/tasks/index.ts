@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../lib/prisma";
+import prisma from "../../../lib/prisma";
 import { getServerSession } from "next-auth";
 
-import { authOptions } from "./auth/[...nextauth]";
-import { taskCreateSchema } from "./../../constants/schema/task.schema";
-import withValidation from "../../utils/middleware/withValidation";
+import { authOptions } from "../auth/[...nextauth]";
+import { taskCreateSchema } from "../../../constants/schema/task.schema";
+import withValidation from "../../../utils/middleware/withValidation";
 
 type Data = {
   message: string;
@@ -25,12 +25,26 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
       }
 
       try {
+        let lastPosition = await prisma.task.findFirst({
+          where: {
+            parentId: req.body.parentId || null,
+          },
+          orderBy: {
+            position: "desc",
+          },
+          select: {
+            position: true,
+          },
+        });
+
         let newTask = await prisma.task.create({
           data: {
             title: req.body.title,
             duration: req.body.duration,
             unit: req.body.unit,
             projectId: req.body.projectId,
+            parentId: req.body.parentId || null,
+            position: (lastPosition?.position as number) + 1 || 0,
           },
         });
 

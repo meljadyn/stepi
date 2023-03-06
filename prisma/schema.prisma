@@ -43,4 +43,5 @@ model Task {
   stage        Int      @default(-1)
   duration     Float?
   unit         String?
+  position     Int
 }
