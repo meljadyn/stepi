@@ -6,18 +6,10 @@ import prisma from "../../lib/prisma";
 import { GetServerSidePropsContext } from "next/types";
 import CreateTask from "../../components/tasks/CreateTask";
 import ShowTasks from "../../components/tasks/ShowTasks";
+import { FrontFacingProject } from "../../constants/types/database.types";
 
 type Props = {
-  project: {
-    id: number;
-    name: string;
-    tasks: {
-      title: string;
-      duration: string;
-      unit: string;
-      id: number;
-    }[];
-  };
+  project: FrontFacingProject;
 };
 
 function Project({ project }: Props) {
@@ -66,6 +58,7 @@ export async function getServerSideProps({
           title: true,
           duration: true,
           unit: true,
+          children: true,
         },
       },
     },

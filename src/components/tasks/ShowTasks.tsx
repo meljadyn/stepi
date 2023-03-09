@@ -1,4 +1,5 @@
 import { List, Container } from "@mantine/core";
+import { FrontFacingTask } from "../../constants/types/database.types";
 import Task from "./Task";
 import { DndContext, useDroppable, closestCenter } from "@dnd-kit/core";
 import {
@@ -9,12 +10,7 @@ import {
 import { useState } from "react";
 
 type Props = {
-  tasks: {
-    title: string;
-    duration: string;
-    unit: string;
-    id: number;
-  }[];
+  tasks: FrontFacingTask[];
 };
 
 function ShowTasks(props: Props) {

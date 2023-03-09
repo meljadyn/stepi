@@ -1,17 +1,13 @@
 import { Group, Paper, Text } from "@mantine/core";
 import { useStyles } from "./styles";
+import { FrontFacingTask } from "../../constants/types/database.types";
 
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 type Props = {
-  task: {
-    title: string;
-    duration: string;
-    unit: string;
-    id: number;
-  };
+  task: FrontFacingTask;
 };
 
 function Task({ task }: Props) {
