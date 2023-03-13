@@ -17,7 +17,9 @@ type Props = {
 };
 
 function Dashboard({ projects }: Props) {
-  const [projectId, setProjectId] = useState<number | null>(null);
+  const [projectId, setProjectId] = useState<number | null>(
+    projects[0].id || null
+  );
   const [project, setProject] = useState<FrontFacingProject | null>(null);
 
   useEffect(() => {
