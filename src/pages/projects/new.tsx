@@ -10,7 +10,7 @@ function NewProject() {
         <title>New Project | Stepi</title>
       </Head>
       <Group>
-        <Sidebar active="New Project" />
+        {/* <Sidebar active="New Project" /> */}
         <CreateProject />
       </Group>
     </>
