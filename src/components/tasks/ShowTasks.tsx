@@ -19,6 +19,10 @@ type Props = {
   tasks: FrontFacingTask[];
 };
 
+// Shows the task list to the frontend. Requires tasks as props.
+
+// Also allows user to sort (drag and drop) tasks, and will call the database
+// preserve the sorted order
 function ShowTasks(props: Props) {
   const [tasks, setTasks] = useState(props.tasks);
 
@@ -64,6 +68,7 @@ function ShowTasks(props: Props) {
         return arrayMove(tasks, oldIndex, newIndex);
       });
 
+      // Preserve changes in database
       fetch("/api/tasks/move_position", {
         method: "PUT",
         headers: {

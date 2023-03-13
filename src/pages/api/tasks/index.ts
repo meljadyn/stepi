@@ -25,6 +25,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
       }
 
       try {
+        // Get the position of the last task in this category, so the new
+        // task is placed last in order
         let lastPosition = await prisma.task.findFirst({
           where: {
             parentId: req.body.parentId || null,

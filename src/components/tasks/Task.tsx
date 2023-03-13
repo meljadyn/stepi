@@ -10,9 +10,11 @@ type Props = {
   task: FrontFacingTask;
 };
 
+// Render a single task to the frontend
 function Task({ task }: Props) {
   const { classes } = useStyles();
 
+  // For drag and drop functionality
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: task.id,

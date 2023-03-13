@@ -10,8 +10,6 @@ import React from 'react';
 import { useState } from "react"
 import { signIn } from "next-auth/react";
 
-// todo: add a user cookie when account creation is successful
-// todo: redirect user to the homepage
 
 function SignUp() {
   const [loading, setLoading] = useState(false);

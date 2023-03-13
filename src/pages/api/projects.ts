@@ -11,6 +11,11 @@ type Data = {
   id?: number;
 };
 
+// Create a project
+// User must be logged in with an active session
+
+// Content-Type: application/json
+// Body must include name: [name-of-project]
 async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   switch (req.method) {
     case "GET": {

@@ -13,7 +13,8 @@ type Props = {
   }[];
 };
 
-function NewProject(props: Props) {
+// Lists the user's projects or links them to create one if none are available
+function ProjectList(props: Props) {
   const { projects } = props;
 
   return (
@@ -46,6 +47,7 @@ function NewProject(props: Props) {
   );
 }
 
+// Retrieves project information
 export async function getServerSideProps({ req }: GetServerSidePropsContext) {
   const session = await getToken({ req });
 
@@ -66,4 +68,4 @@ export async function getServerSideProps({ req }: GetServerSidePropsContext) {
   };
 }
 
-export default NewProject;
+export default ProjectList;

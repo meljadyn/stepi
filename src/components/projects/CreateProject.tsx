@@ -3,6 +3,7 @@ import { useForm, zodResolver } from "@mantine/form";
 import { useState } from "react";
 import { projectCreateSchema } from "../../constants/schema/project.schema";
 
+// Form to create a new project
 function CreateProject() {
   const [loading, setLoading] = useState(false);
   const form = useForm({

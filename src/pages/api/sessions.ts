@@ -14,6 +14,9 @@ type Data = {
   };
 };
 
+// Log in a user (start an active session)
+// Content-Type: application/json
+// Body parameters: email, password
 async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   switch (req.method) {
     case "GET": {

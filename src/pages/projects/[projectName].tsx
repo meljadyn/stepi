@@ -29,6 +29,7 @@ function Project({ project }: Props) {
   );
 }
 
+// Get project information and the corresponding tasks list
 export async function getServerSideProps({
   req,
   params,

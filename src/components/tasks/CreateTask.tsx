@@ -16,6 +16,7 @@ type Props = {
   projectId: number;
 };
 
+// Form to create a new task
 function CreateTask({ projectId }: Props) {
   const [loading, setLoading] = useState(false);
 

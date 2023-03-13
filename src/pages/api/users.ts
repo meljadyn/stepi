@@ -12,7 +12,9 @@ type Data = {
   id?: string;
 };
 
-
+// Create a user
+// Content-Type: application/json
+// Body parameters: email, password
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -36,6 +38,7 @@ async function handler(
             id: newUser.id,
           });
         } catch (e) {
+          // Database determines email is not unique
           if (
             e instanceof Prisma.PrismaClientKnownRequestError &&
             e.code === "P2002"

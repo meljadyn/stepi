@@ -9,6 +9,16 @@ type Data = {
   id?: number;
 };
 
+// Moves the position of a task past the reference task.
+// i.e. if task order is ABC
+// A moves past C -> B C A
+// C moves past A -> C A B
+
+// Call with Content-Type: application/json
+// Body parameters include
+//     "moved" -- the id of the task that has moved places
+//     "reference" -- the id of the task that it is moving past
+
 async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   switch (req.method) {
     case "GET": {
@@ -23,6 +33,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
       }
 
       try {
+        // Get the moved and reference task details from their id
         const moved = await prisma.task.findUnique({
           where: {
             id: req.body.moved,
@@ -47,6 +58,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
           },
         });
 
+        // Check data is valid to be swapped
         if (
           !(moved && reference) ||
           moved.parentId != reference.parentId ||
@@ -55,6 +67,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
           throw Error;
         }
 
+        // Increment/decrement positions of every items between the moved and
+        // reference item
         if (moved.position > reference.position) {
           await prisma.task.updateMany({
             where: {
@@ -113,6 +127,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
           });
         }
 
+        // Replace the position of the moved task with the ORIGINAL position of
+        // the reference task
         await prisma.task.update({
           where: {
             id: moved.id,
