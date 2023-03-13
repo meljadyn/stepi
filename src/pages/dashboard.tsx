@@ -1,6 +1,7 @@
 import Head from "next/head";
-import { Group, Title } from "@mantine/core";
+import { AppShell, Group, Title } from "@mantine/core";
 import Sidebar from "../components/navigation/Sidebar";
+import Navbar from "../components/navigation/Navbar";
 
 function Dashboard() {
   return (
@@ -8,10 +9,13 @@ function Dashboard() {
       <Head>
         <title>Dashboard | Stepi</title>
       </Head>
-      <Group>
-        <Sidebar active="Home" />
+      <AppShell
+        padding="md"
+        header={<Navbar />}
+        navbar={<Sidebar active="Home" />}
+      >
         <Title>Dashboard</Title>
-      </Group>
+      </AppShell>
     </>
   );
 }

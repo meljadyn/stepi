@@ -4,6 +4,7 @@ import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { SessionProvider } from "next-auth/react";
 import React from "react";
+import { ThemeContext } from "@emotion/react";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -25,6 +26,7 @@ export default function App(props: AppProps) {
           /** Put your mantine theme override here */
           fontFamily: "Poppins, sans-serif",
           colorScheme: "light",
+          primaryColor: "indigo",
         }}
       >
         <NotificationsProvider>

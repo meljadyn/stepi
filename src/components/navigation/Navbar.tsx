@@ -21,7 +21,7 @@ export default function LandingNavbar() {
 
   return (
     <Box pb={10}>
-      <Header height={60} px="md">
+      <Header height={60} px="md" className={classes.main}>
         <Group position="apart" sx={{ height: "100%" }}>
           <StepiLogo size={25} />
           <Group
