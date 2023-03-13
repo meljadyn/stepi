@@ -28,6 +28,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
         let lastPosition = await prisma.task.findFirst({
           where: {
             parentId: req.body.parentId || null,
+            projectId: req.body.projectId,
           },
           orderBy: {
             position: "desc",

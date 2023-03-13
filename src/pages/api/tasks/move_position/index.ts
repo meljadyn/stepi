@@ -15,7 +15,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
       return res.redirect("/404");
     }
 
-    case "POST": {
+    case "PUT": {
       const session = await getServerSession(req, res, authOptions);
 
       if (!session) {
@@ -23,6 +23,106 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
       }
 
       try {
+        const moved = await prisma.task.findUnique({
+          where: {
+            id: req.body.moved,
+          },
+          select: {
+            position: true,
+            id: true,
+            parentId: true,
+            projectId: true,
+          },
+        });
+
+        const reference = await prisma.task.findUnique({
+          where: {
+            id: req.body.reference,
+          },
+          select: {
+            position: true,
+            id: true,
+            parentId: true,
+            projectId: true,
+          },
+        });
+
+        if (
+          !(moved && reference) ||
+          moved.parentId != reference.parentId ||
+          moved.projectId != reference.projectId
+        ) {
+          throw Error;
+        }
+
+        if (moved.position > reference.position) {
+          await prisma.task.updateMany({
+            where: {
+              AND: [
+                {
+                  position: {
+                    lt: moved.position,
+                  },
+                },
+                {
+                  position: {
+                    gte: reference.position,
+                  },
+                },
+                {
+                  parentId: moved.parentId,
+                },
+                {
+                  projectId: moved.projectId,
+                },
+              ],
+            },
+            data: {
+              position: {
+                increment: 1,
+              },
+            },
+          });
+        } else if (moved.position < reference.position) {
+          await prisma.task.updateMany({
+            where: {
+              AND: [
+                {
+                  position: {
+                    gt: moved.position,
+                  },
+                },
+                {
+                  position: {
+                    lte: reference.position,
+                  },
+                },
+                {
+                  parentId: moved.parentId,
+                },
+                {
+                  projectId: moved.projectId,
+                },
+              ],
+            },
+            data: {
+              position: {
+                decrement: 1,
+              },
+            },
+          });
+        }
+
+        await prisma.task.update({
+          where: {
+            id: moved.id,
+          },
+          data: {
+            position: reference.position,
+          },
+        });
+
+        return res.status(200).json({ message: "Tasks successfully updated" });
       } catch (e) {
         return res.status(500).json({
           message: "Internal server error",

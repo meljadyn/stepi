@@ -60,6 +60,9 @@ export async function getServerSideProps({
           unit: true,
           children: true,
         },
+        orderBy: {
+          position: "asc",
+        },
       },
     },
   });

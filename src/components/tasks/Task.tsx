@@ -1,4 +1,4 @@
-import { Group, Paper, Text } from "@mantine/core";
+import { Group, List, Paper, Text } from "@mantine/core";
 import { useStyles } from "./styles";
 import { FrontFacingTask } from "../../constants/types/database.types";
 

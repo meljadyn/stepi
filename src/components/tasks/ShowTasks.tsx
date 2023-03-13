@@ -1,7 +1,13 @@
 import { List, Container } from "@mantine/core";
 import { FrontFacingTask } from "../../constants/types/database.types";
 import Task from "./Task";
-import { DndContext, useDroppable, closestCenter } from "@dnd-kit/core";
+import {
+  DndContext,
+  useDroppable,
+  closestCenter,
+  rectIntersection,
+  closestCorners,
+} from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
@@ -30,7 +36,11 @@ function ShowTasks(props: Props) {
         collisionDetection={closestCenter}
         id={"DragAndDrop"}
       >
-        <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
+        <SortableContext
+          id="parent"
+          items={tasks}
+          strategy={verticalListSortingStrategy}
+        >
           <List sx={{ listStyleType: "none" }}>
             <div ref={setNodeRef} style={style}>
               {tasks.length > 0 &&
@@ -52,6 +62,14 @@ function ShowTasks(props: Props) {
         const newIndex = taskKeys.indexOf(over.id);
 
         return arrayMove(tasks, oldIndex, newIndex);
+      });
+
+      fetch("/api/tasks/move_position", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ moved: active.id, reference: over.id }),
       });
     }
   }
