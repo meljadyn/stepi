@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../lib/prisma";
+import prisma from "../../../lib/prisma";
 import { getServerSession } from "next-auth";
 
-import { authOptions } from "./auth/[...nextauth]";
-import { projectCreateSchema } from "./../../constants/schema/project.schema";
-import withValidation from "../../utils/middleware/withValidation";
+import { authOptions } from "../auth/[...nextauth]";
+import { projectCreateSchema } from "../../../constants/schema/project.schema";
+import withValidation from "../../../utils/middleware/withValidation";
 
 type Data = {
   message: string;

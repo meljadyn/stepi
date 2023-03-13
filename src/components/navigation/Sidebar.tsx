@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navbar } from "@mantine/core";
+import { NativeSelect, Navbar, Select } from "@mantine/core";
 import {
   IconSettings,
   IconHome,
@@ -20,11 +20,24 @@ const data = [
 
 type Props = {
   active: string;
+  projects: {
+    id: number;
+    name: string;
+  }[];
+  projectId: number | null;
+  setProjectId: (value: number | null) => void;
 };
 
 export function Sidebar(props: Props) {
   const { classes, cx } = useSidebarStyles();
   const [active, setActive] = useState(props.active || "Home");
+
+  const projects = props.projects.map((project: any) => {
+    return {
+      label: project.name,
+      value: `${project.id}`,
+    };
+  });
 
   const links = data.map((item) => (
     <a
@@ -49,6 +62,17 @@ export function Sidebar(props: Props) {
       p="md"
       className={classes.navbar}
     >
+      {props.projects && (
+        <Navbar.Section>
+          <NativeSelect
+            data={projects}
+            value={`${props.projectId}`} // Requires string as value
+            onChange={(e) =>
+              props.setProjectId(parseInt(e.currentTarget.value))
+            }
+          />
+        </Navbar.Section>
+      )}
       <Navbar.Section grow>{links}</Navbar.Section>
 
       <Navbar.Section className={classes.footer}>

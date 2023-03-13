@@ -1,8 +1,8 @@
 export interface FrontFacingTask {
   id: number;
   title: string;
-  duration: string;
-  unit: string;
+  duration: number | null;
+  unit: string | null;
   children: FrontFacingTask[];
 }
 

@@ -8,7 +8,6 @@ export const useStyles = createStyles((theme) => ({
     border: "2px solid white",
     borderRadius: "50%",
   },
-
   link: {
     textDecoration: "none",
   },

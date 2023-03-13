@@ -23,7 +23,7 @@ function ProjectList(props: Props) {
         <title>Projects | Stepi</title>
       </Head>
       <Group>
-        <Sidebar active="Projects" />
+        {/* <Sidebar active="Projects" /> */}
         {projects.length > 1 ? (
           <List sx={{ listStyleType: "none" }}>
             {projects.map((project) => (
