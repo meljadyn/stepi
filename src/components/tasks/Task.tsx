@@ -1,7 +1,7 @@
-import { Group, List, Paper, Text } from "@mantine/core";
+import { Button, Group, List, Paper, Text } from "@mantine/core";
 import { useStyles } from "./styles";
 import { FrontFacingTask } from "../../constants/types/database.types";
-
+import { IconTrash, IconGripVertical } from "@tabler/icons";
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -25,15 +25,28 @@ function Task({ task }: Props) {
     transition,
   };
 
+  const deleteTask = () => {
+    console.log("calling for the deletion");
+    fetch(`/api/tasks/${task.id}`, {
+      method: "DELETE",
+    });
+  };
+
   return (
-    <li ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <li ref={setNodeRef} style={style}>
       <Paper withBorder shadow="lg" p="md" className={classes.task}>
         <Group>
+          <Button variant="subtle" {...attributes} {...listeners}>
+            <IconGripVertical />
+          </Button>
           <Text>{task.title}</Text>
           <Text>
             {task.duration || "no duration"}
             {task.duration ? task.unit : null}
           </Text>
+          <Button onClick={deleteTask}>
+            <IconTrash />
+          </Button>
         </Group>
       </Paper>
     </li>
